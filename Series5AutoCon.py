@@ -18,7 +18,7 @@ columnsSubplots = 4
 
 #Sub-directory finder
 def getDirectory(mainDir, flow, o2, temp, trial, flow_ramping = None):
-    subDir = mainDir+'flow_'+flow+'%/'+o2+'O2/'+'temp_'+temp+'/'+trial+'/processedData/'
+    subDir = mainDir+'flow_'+flow+'%/'+o2+'O2/'+'temp_'+temp+'/'+trial+'/processedData/10_14_2014/'
     if flow_ramping != None:
         subDir =  subDir.replace('temp_'+temp,'temp_'+temp+'/flow_ramping')
     else:
@@ -61,13 +61,17 @@ for j in range(rowsSubplots):
     
             
     if j==0:
-        type = 'avePiezo'
-        valueZ = 'avePSDZ.npy'
-        labelsd = 'Ave. Piezo (Hz)'
+        type = 'AutoCorr'
+        valueZ = 'aveAutoCorr.npy'
+        valueY = 'aveAutoTau.npy'
+        valueX = 'aveAutoX.npy'
+        labelsd = 'Ave. Auto Corr (Lag)'
     elif j==1:
-        type = 'accelerometer'
-        valueZ = 'accelChan.npy'
-        labelsd = 'Ave. Accel (Hz)'
+        type = 'AutoCorr'
+        valueZ = 'aveAutoCorrAccel.npy'
+        valueY = 'aveAutoTauAccel.npy'
+        valueX = 'aveAutoXAccel.npy'
+        labelsd = 'Ave. Auto Corr. Accel (Lag)'
     else:
         type = 'FAC'
         
@@ -82,59 +86,59 @@ for j in range(rowsSubplots):
         if i%2 ==0: 
             if i==0: 
                 ax.set_ylabel(labelsd, fontsize=16)
-                trial = 'trial_1_Jan_2014'
-                flow = '20'
+                trial = 'trial_2_Mar_2014'
+                flow = '30'
                 o2 = 'no'
                 temp = '95'
                 
-                title = '20% Flow ' +'No O2'
+                title = '1.16l/min, No O2'
                 
                 if type == 'FAC':
                     ax.set_ylabel('FAC Rate (mm/year)',fontsize=16)
                     plotDir1 = '/Users/cathymartin/Desktop/DickBiscuit'
-                    FAC = np.load(os.path.join(plotDir1, '30_2.npy'))
+                    FAC = np.load(os.path.join(plotDir1, '80_1.npy'))
                     dateB1 = FAC[0]
                     diameterB1 = FAC[1]
                     fitB1 = FAC[2]
                     FACB1 = FAC[3]
                 else:
                     plotDir1 = getDirectory(mainDir,flow,o2,temp,trial)+type
-                    plotDir2 = getDirectory(mainDir,flow,o2,temp,trial)+'avePiezo'
+                    plotDir2 = getDirectory(mainDir,flow,o2,temp,trial)+'AutoCorr'
                     print plotDir1
-                    X = np.load(os.path.join(plotDir2, 'avePSDX.npy'))
-                    Y = np.load(os.path.join(plotDir2, 'avePSDY.npy'))
+                    X = np.load(os.path.join(plotDir2, valueX))
+                    Y = np.load(os.path.join(plotDir1, valueY))
                     Z = np.load(os.path.join(plotDir1, valueZ))
                    
                     long = True
                 
             elif i==2:
                 trial = 'trial_1_Jan_2014'
-                flow = '20'
-                o2 = 'no'
+                flow = '30'
+                o2 = 'high'
                 temp = '95'
                 
-                title = '20% Flow ' +'No O2'
+                title = '1.16l/min, w/O2'
                 
                 if type == 'FAC':
                     plotDir1 = '/Users/cathymartin/Desktop/DickBiscuit'
-                    FAC = np.load(os.path.join(plotDir1, '30_2.npy'))
+                    FAC = np.load(os.path.join(plotDir1, '30_o_1.npy'))
                     dateB1 = FAC[0]
                     diameterB1 = FAC[1]
                     fitB1 = FAC[2]
                     FACB1 = FAC[3]
                 else:
-                    plotDir1 = getDirectory(mainDir,flow,o2,temp,trial)+type
-                    plotDir2 = getDirectory(mainDir,flow,o2,temp,trial)+'avePiezo'
+                    plotDir1 = getDirectory(mainDir,flow,o2,temp,trial,flow_ramping=True)+type
+                    plotDir2 = getDirectory(mainDir,flow,o2,temp,trial,flow_ramping=True)+'AutoCorr'
                     print plotDir1
-                    X = np.load(os.path.join(plotDir2, 'avePSDX.npy'))
-                    Y = np.load(os.path.join(plotDir2, 'avePSDY.npy'))
+                    X = np.load(os.path.join(plotDir2, valueX))
+                    Y = np.load(os.path.join(plotDir1, valueY))
                     Z = np.load(os.path.join(plotDir1, valueZ))
                    
-                    long = True
+                    long = False
                 
             else:
-                trial = 'trial_1_Jan_2014'
-                flow = '20'
+                trial = 'skip'
+                flow = '30'
                 o2 = 'no'
                 temp = '95'
                 
@@ -149,67 +153,67 @@ for j in range(rowsSubplots):
                     FACB1 = FAC[3]
                 else:
                     plotDir1 = getDirectory(mainDir,flow,o2,temp,trial)+type
-                    plotDir2 = getDirectory(mainDir,flow,o2,temp,trial)+'avePiezo'
+                    plotDir2 = getDirectory(mainDir,flow,o2,temp,trial)+'AutoCorr'
                     print plotDir1
-                    X = np.load(os.path.join(plotDir2, 'avePSDX.npy'))
-                    Y = np.load(os.path.join(plotDir2, 'avePSDY.npy'))
+                    X = np.load(os.path.join(plotDir2, valueX))
+                    Y = np.load(os.path.join(plotDir1, valueY))
                     Z = np.load(os.path.join(plotDir1, valueZ))
                    
                     long = True
              
         else:
             if i==1:   
-                trial = 'trial_1_Jan_2014'
-                flow = '20'
+                trial = 'trial_1_June_2014'
+                flow = '80'
                 o2 = 'no'
                 temp = '95'
                 
-                title = '20% Flow ' +'No O2'
+                title = '3.09l/min, no O2'
                 
                 if type == 'FAC':
                     plotDir1 = '/Users/cathymartin/Desktop/DickBiscuit'
-                    FAC = np.load(os.path.join(plotDir1, '30_2.npy'))
+                    FAC = np.load(os.path.join(plotDir1, '80_2.npy'))
                     dateB1 = FAC[0]
                     diameterB1 = FAC[1]
                     fitB1 = FAC[2]
                     FACB1 = FAC[3]
                 else:
                     plotDir1 = getDirectory(mainDir,flow,o2,temp,trial)+type
-                    plotDir2 = getDirectory(mainDir,flow,o2,temp,trial)+'avePiezo'
+                    plotDir2 = getDirectory(mainDir,flow,o2,temp,trial)+'AutoCorr'
                     print plotDir1
-                    X = np.load(os.path.join(plotDir2, 'avePSDX.npy'))
-                    Y = np.load(os.path.join(plotDir2, 'avePSDY.npy'))
+                    X = np.load(os.path.join(plotDir2, valueX))
+                    Y = np.load(os.path.join(plotDir1, valueY))
                     Z = np.load(os.path.join(plotDir1, valueZ))
                    
                     long = True
                 
             elif i==3:
                 trial = 'trial_1_Jan_2014'
-                flow = '20'
-                o2 = 'no'
+                flow = '80'
+                o2 = 'high'
                 temp = '95'
                 
-                title = '20% Flow ' +'No O2'
+                title = '3.09l/min, w/O2'
                 
                 if type == 'FAC':
                     plotDir1 = '/Users/cathymartin/Desktop/DickBiscuit'
-                    FAC = np.load(os.path.join(plotDir1, '30_2.npy'))
+                    FAC = np.load(os.path.join(plotDir1, '30_o_2.npy'))
                     dateB1 = FAC[0]
                     diameterB1 = FAC[1]
                     fitB1 = FAC[2]
                     FACB1 = FAC[3]
                 else:
-                    plotDir1 = getDirectory(mainDir,flow,o2,temp,trial)+type
-                    plotDir2 = getDirectory(mainDir,flow,o2,temp,trial)+'avePiezo'
+                    plotDir1 = getDirectory(mainDir,flow,o2,temp,trial,flow_ramping=True)+type
+                    plotDir2 = getDirectory(mainDir,flow,o2,temp,trial,flow_ramping=True)+'AutoCorr'
                     print plotDir1
-                    X = np.load(os.path.join(plotDir2, 'avePSDX.npy'))
-                    Y = np.load(os.path.join(plotDir2, 'avePSDY.npy'))
+                    X = np.load(os.path.join(plotDir2, valueX))
+                    Y = np.load(os.path.join(plotDir1, valueY))
                     Z = np.load(os.path.join(plotDir1, valueZ))
                    
-                    long = True
+                    long = False
                 
             else:
-                trial = 'trial_1_Jan_2014'
+                trial = 'skip'
                 flow = '20'
                 o2 = 'no'
                 temp = '95'
@@ -225,10 +229,10 @@ for j in range(rowsSubplots):
                     FACB1 = FAC[3]
                 else:
                     plotDir1 = getDirectory(mainDir,flow,o2,temp,trial)+type
-                    plotDir2 = getDirectory(mainDir,flow,o2,temp,trial)+'avePiezo'
+                    plotDir2 = getDirectory(mainDir,flow,o2,temp,trial)+'AutoCorr'
                     print plotDir1
-                    X = np.load(os.path.join(plotDir2, 'avePSDX.npy'))
-                    Y = np.load(os.path.join(plotDir2, 'avePSDY.npy'))
+                    X = np.load(os.path.join(plotDir2, valueX))
+                    Y = np.load(os.path.join(plotDir1, valueY))
                     Z = np.load(os.path.join(plotDir1, valueZ))
                    
                     long = True
@@ -238,17 +242,18 @@ for j in range(rowsSubplots):
         
         if long == True:
             Zave = getRunsAverage(Z,6)
-            ZNew = Zave[0]
+            zNew = Zave[0]
             bins = Zave[1]
+            bins = range(bins)
             ax.set_xlabel('Hours (hr)')
         else:
-#             zNew = Z
-#             bins = X
+            zNew = Z
+            bins = X
             ax.set_xlabel('Hours (hr)')
             print X
             
         if j==0:
-           ax.set_title(title, fontsize=20)
+            ax.set_title(title, fontsize=20)
         print 'Plotting'
 #         Z = np.transpose(Z)
         if type == 'FAC':
@@ -262,22 +267,21 @@ for j in range(rowsSubplots):
 
             ax.plot(minutesince,diameterB1,'c')
             ax.plot(minutesince,fitB1,'k')
-            font = {'family' : 'serif', 'size' : 10}
+            font = {'family' : 'serif', 'size' : 12}
             ax.set_xlim(0,max(minutesince))
-            ax.text(minutesince[200], 0.0018, 'FAC ='+str("{:5.4f}".format(FACB1))+' mm/year', fontdict=font)
+#             if i==1:
+#                 ax.set_ylim(0.0022,0.0024)
+            ax.text(minutesince[300],fitB1[300]+0.00005, 'FAC ='+str("{:5.4f}".format(FACB1))+' mm/year', fontdict=font)
         else:
             print'yikes'
             
             labels = ax.get_xticklabels()
             for label in labels:
                 label.set_rotation(90) 
-            xticks = ax.xaxis.get_major_ticks()
-            xticks[0].label1.set_visible(False)
-            ax.set_ylim(0,)
-            
-#         ax.set_ylim(100,100000)
-#         ax.semilogy()
-#             ax.contourf(X,Y,Z,norm=LogNorm())
+
+            ax.set_ylim(0,np.max(Y))
+#             ax.semilogy()
+            ax.contourf(bins,Y,zNew)
 #         ,norm=LogNorm()
         toc = time.clock()
         
@@ -297,7 +301,7 @@ for j in range(rowsSubplots):
 fig.tight_layout(pad = 1, h_pad = 0.75, w_pad = 0.18)
 fig.set_facecolor('0.75')
 # plt.subplots_adjust(top=0.90)
-plt.savefig('Coherence New Probe Vs Old Probe at 95 and 140 Deg C Various Flow Rates, High O2.png')
+plt.savefig('Series2AutoCon.png')
 print 'saved'
 # toc = time.clock()
 # print toc-tic
